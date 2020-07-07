@@ -1,0 +1,50 @@
+<?php
+defined("BASEPATH") or exit("No acces");
+class Table_tb extends CI_Model {
+	public function insert($insert) {
+		$this->db->insert('table_tb', $insert);
+	}
+	public function view() {
+		$this->db->select('*')->from('table_tb');
+		$query = $this->db->get();
+		return $query->result();
+	}
+	public function viewA() {
+
+		$query = $this->db->query("SELECT * FROM table_tb WHERE status='Available'");
+
+		//Print_r($this->db->last_query());
+		exit;
+
+		return $query->result();
+	}
+
+	public function view1() {
+
+		$query = $this->db->query("SELECT COUNT(*) as count_rows FROM table_tb where status='Available' ");
+		return $query->row_array();
+	}
+
+	public function view5() {
+
+		$a = "Available";
+
+		$this->db->select('count(*)');
+		$this->db->from('table_tb');
+		$this->db->where('status', $a);
+		$query = $this->db->get();
+
+		echo $query->num_rows();
+	}
+	public function delete($id) {
+		$this->db->where('id', $id);
+		$this->db->delete('table_tb');
+	}
+	public function update($seats) {
+		$query = $this->db->query("update table_tb SET status='Booked' where status='Available' LIMIT $seats ");
+	}
+	public function update2($seats) {
+		$query = $this->db->query("update table_tb SET status='Available' where status='Booked' LIMIT $seats ");
+	}
+}
+?>
